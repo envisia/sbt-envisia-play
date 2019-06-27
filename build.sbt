@@ -10,7 +10,6 @@ val ScalaFmtVersion = "1.5.1"
 name := "sbt-envisia-play"
 organization := "de.envisia.sbt"
 scalaVersion := EnvisiaScalaVersion
-crossScalaVersions := Seq(EnvisiaScalaVersion, "2.13.0")
 // publishing settings
 sonatypeProfileName := "de.envisia"
 publishMavenStyle := true
