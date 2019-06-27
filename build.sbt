@@ -3,13 +3,14 @@ import xerial.sbt.Sonatype._
 
 /** Versions */
 val EnvisiaScalaVersion = "2.12.8"
-val AkkaVersion = "2.5.22"
-val PlayVersion = "2.7.2"
+val AkkaVersion = "2.5.23"
+val PlayVersion = "2.7.3"
 val ScalaFmtVersion = "1.5.1"
 
 name := "sbt-envisia-play"
 organization := "de.envisia.sbt"
 scalaVersion := EnvisiaScalaVersion
+crossScalaVersions := Seq(EnvisiaScalaVersion, "2.13.0")
 // publishing settings
 sonatypeProfileName := "de.envisia"
 publishMavenStyle := true
@@ -47,6 +48,7 @@ buildInfoKeys := Seq[BuildInfoKey](
   "akkaVersion" -> AkkaVersion
 )
 
+releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
