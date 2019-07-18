@@ -1,7 +1,5 @@
 package de.envisia.sbt.angular
 
-import java.net.InetSocketAddress
-
 import play.sbt.PlayRunHook
 import sbt._
 

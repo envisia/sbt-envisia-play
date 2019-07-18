@@ -25,6 +25,7 @@ object AngularPlugin extends AutoPlugin {
     val ngLint: TaskKey[Unit]                   = taskKey[Unit]("ng lint")
     val ngPackage: TaskKey[Seq[(File, String)]] = taskKey[Seq[(File, String)]]("ng package")
     val ngDeployUrl: SettingKey[Option[String]] = settingKey[Option[String]]("ng deploy url")
+    val ngDevModeAot: SettingKey[Boolean]       = settingKey[Boolean]("ng dev mode aot")
   }
 
   import autoImport._
@@ -50,13 +51,13 @@ object AngularPlugin extends AutoPlugin {
   }
 
   private def ngBuildTask = Def.task {
-    val baseHref = ngBaseHref.value
-    val ng       = ngCommand.value
-    val dir      = ngDirectory.value
-    val log      = streams.value.log
-    val output   = ngOutputDirectory.value
-    val deployUrl = ngDeployUrl.value
-    val withBaseHref = baseHref.map(h => s"--base-href=$h").getOrElse("")
+    val baseHref      = ngBaseHref.value
+    val ng            = ngCommand.value
+    val dir           = ngDirectory.value
+    val log           = streams.value.log
+    val output        = ngOutputDirectory.value
+    val deployUrl     = ngDeployUrl.value
+    val withBaseHref  = baseHref.map(h => s"--base-href=$h").getOrElse("")
     val withDeployUrl = deployUrl.map(h => s"--deploy-url=$h").getOrElse("")
     runProcessSync(
       log,
@@ -101,6 +102,7 @@ object AngularPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
     ngNodeMemory := 1024,
+    ngDevModeAot := false,
     ngDeployUrl := None,
     ngBaseHref := None,
     ngDirectory := file("ui"),
@@ -133,7 +135,8 @@ object AngularPlugin extends AutoPlugin {
       streams.value.log,
       ngBaseDirectory.value,
       target.value,
-      ngDevOutputDirectory.value
+      ngDevOutputDirectory.value,
+      ngDevModeAot.value,
     ),
     // Sets the Angular output directory as Play's public directory. This completely replaces the
     // public directory, if you want to use this in addition to the assets in the public directory,
