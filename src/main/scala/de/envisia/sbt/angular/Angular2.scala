@@ -15,9 +15,11 @@ object Angular2 {
       log: Logger,
       base: File,
       target: File,
-      targetFolder: File
+      targetFolder: File,
+      ngAot: Boolean
   ): PlayRunHook = {
     val withBaseHref = ngBaseHref.map(h => s"--base-href=$h").getOrElse("")
+    val withAot = if (ngAot) s"--aot" else ""
 
     object Angular2Process extends PlayRunHook {
       private var watchProcess: Option[Process] = None
@@ -41,7 +43,7 @@ object Angular2 {
       override def afterStarted(): Unit = {
         watchProcess = Some(
           Process(
-            s"$ng build $withBaseHref --watch --delete-output-path=false --progress=false --output-path=${targetFolder.toString}",
+            s"$ng build $withBaseHref $withAot --watch --delete-output-path=false --progress=false --output-path=${targetFolder.toString}",
             base
           ).run
         )
