@@ -68,7 +68,6 @@ object CommonPlugin extends AutoPlugin {
       "-Xlint:option-implicit", // Option.apply used implicit view.
       "-Xlint:delayedinit-select", // Selecting member of DelayedInit.
       "-Xlint:package-object-classes", // Class or object defined in package object.
-      "-Xlint:stars-align Pattern", // sequence wildcard must align with sequence component.
       "-Xlint:constant", // Evaluation of a constant arithmetic expression results in an error.
       "-Xlint:unused", // Enable -Ywarn-unused:imports,privates,locals,implicits.
       "-Xlint:nonlocal-return", // A return statement used an exception for flow control.
