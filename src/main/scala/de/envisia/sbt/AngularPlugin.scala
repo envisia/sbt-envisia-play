@@ -128,9 +128,9 @@ object AngularPlugin extends AutoPlugin {
     ngOutputDirectory := target.value / "dist",
     ngDevOutputDirectory := ngTarget.value / "public" / "main",
     ngPackage := ngBuildAndGzip.value,
-    packageInstall := {
-      if (ngUseYarn.value) yarnInstall.value
-      else npmInstall.value
+    packageInstall := Def.taskDyn {
+      if (ngUseYarn.value) Def.task(yarnInstall.value)
+      else Def.task(npmInstall.value)
     },
     npmInstall := {
       val log = streams.value.log
