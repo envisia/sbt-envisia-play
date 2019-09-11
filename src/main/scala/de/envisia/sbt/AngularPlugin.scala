@@ -18,6 +18,7 @@ object AngularPlugin extends AutoPlugin {
     val ngDirectory: SettingKey[File]           = settingKey[File]("ng directory")
     val ngTarget: SettingKey[File]              = settingKey[File]("ng target")
     val ngBaseDirectory: SettingKey[File]       = settingKey[File]("ngBaseDirectory")
+    val npmInstall: TaskKey[Unit]               = taskKey[Unit]("npmInstall")
     val yarnInstall: TaskKey[Unit]              = taskKey[Unit]("yarnInstall")
     val ngBuild: TaskKey[Seq[(File, String)]]   = taskKey[Seq[(File, String)]]("ngBuild")
     val ngOutputDirectory: SettingKey[File]     = settingKey[File]("build output directory of angular")
@@ -26,9 +27,15 @@ object AngularPlugin extends AutoPlugin {
     val ngPackage: TaskKey[Seq[(File, String)]] = taskKey[Seq[(File, String)]]("ng package")
     val ngDeployUrl: SettingKey[Option[String]] = settingKey[Option[String]]("ng deploy url")
     val ngDevModeAot: SettingKey[Boolean]       = settingKey[Boolean]("ng dev mode aot")
+    val ngUseYarn: SettingKey[Boolean]          = settingKey[Boolean]("use yarn")
+
+    private[sbt] object ngInternal {
+      val packageInstall: TaskKey[Unit]              = taskKey[Unit]("packageInstall")
+    }
   }
 
   import autoImport._
+  import autoImport.ngInternal._
   import scala.sys.process._
   import com.typesafe.sbt.packager.MappingsHelper._
 
@@ -101,6 +108,7 @@ object AngularPlugin extends AutoPlugin {
   }
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
+    ngUseYarn := true,
     ngNodeMemory := 1024,
     ngDevModeAot := false,
     ngDeployUrl := None,
@@ -113,21 +121,30 @@ object AngularPlugin extends AutoPlugin {
       }
     },
     ngCommand := s"${ngProcessPrefix.value}node --max_old_space_size=${ngNodeMemory.value} node_modules/@angular/cli/bin/ng",
-    ngLint := ngLintTask.dependsOn(yarnInstall).value,
+    ngLint := ngLintTask.dependsOn(packageInstall).value,
     ngTarget := target.value / "web",
     cleanFiles += ngDirectory.value / "dist",
     ngBaseDirectory := ngDirectory.value,
     ngOutputDirectory := target.value / "dist",
     ngDevOutputDirectory := ngTarget.value / "public" / "main",
     ngPackage := ngBuildAndGzip.value,
+    packageInstall := {
+      if (ngUseYarn.value) yarnInstall.value
+      else npmInstall.value
+    },
+    npmInstall := {
+      val log = streams.value.log
+      // resolve dependencies before installing
+      runProcessSync(log, s"${ngProcessPrefix.value}npm install", ngDirectory.value)
+    },
     yarnInstall := {
       val log = streams.value.log
       // resolve dependencies before installing
       runProcessSync(log, s"${ngProcessPrefix.value}yarn install", ngDirectory.value)
     },
-    (run in Compile) := (run in Compile).dependsOn(yarnInstall).evaluated,
+    (run in Compile) := (run in Compile).dependsOn(packageInstall).evaluated,
     // includes the angular application
-    ngBuild := ngBuildTask.dependsOn(yarnInstall).value,
+    ngBuild := ngBuildTask.dependsOn(packageInstall).value,
     mappings in (Compile, packageBin) ++= ngPackage.value,
     PlayKeys.playRunHooks += Angular2(
       ngCommand.value,
