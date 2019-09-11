@@ -136,6 +136,7 @@ object AngularPlugin extends AutoPlugin {
       val log = streams.value.log
       // resolve dependencies before installing
       runProcessSync(log, s"${ngProcessPrefix.value}npm install", ngDirectory.value)
+      runProcessSync(log, s"${ngProcessPrefix.value}npm run postinstall", ngDirectory.value)
     },
     yarnInstall := {
       val log = streams.value.log
