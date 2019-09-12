@@ -131,7 +131,7 @@ object AngularPlugin extends AutoPlugin {
     packageInstall := Def.taskDyn {
       if (ngUseYarn.value) Def.task(yarnInstall.value)
       else Def.task(npmInstall.value)
-    },
+    }.value,
     npmInstall := {
       val log = streams.value.log
       // resolve dependencies before installing
