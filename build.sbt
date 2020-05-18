@@ -3,8 +3,7 @@ import xerial.sbt.Sonatype._
 
 /** Versions */
 val EnvisiaScalaVersion = "2.12.10"
-val AkkaVersion = "2.5.23"
-val PlayVersion = "2.7.3"
+val PlayVersion = "2.8.1"
 val ScalaFmtVersion = "1.5.1"
 
 name := "sbt-envisia-play"
@@ -44,7 +43,6 @@ buildInfoKeys := Seq[BuildInfoKey](
   scalaVersion,
   sbtVersion,
   "playVersion" -> PlayVersion,
-  "akkaVersion" -> AkkaVersion
 )
 
 releaseCrossBuild := true
