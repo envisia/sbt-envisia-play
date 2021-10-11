@@ -68,7 +68,7 @@ object AngularPlugin extends AutoPlugin {
     val withDeployUrl = deployUrl.map(h => s"--deploy-url=$h").getOrElse("")
     runProcessSync(
       log,
-      s"$ng build $withBaseHref --prod=true --progress=false --aot=true --build-optimizer $withDeployUrl --output-path=${output.toString}",
+      s"$ng build $withBaseHref --configuration production --progress=false --aot=true --build-optimizer $withDeployUrl --output-path=${output.toString}",
       dir
     )
     contentOf(output)
