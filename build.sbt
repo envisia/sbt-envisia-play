@@ -2,8 +2,8 @@ import ReleaseTransformations._
 import xerial.sbt.Sonatype._
 
 /** Versions */
-val EnvisiaScalaVersion = "2.12.12"
-val PlayVersion = "2.8.15"
+val EnvisiaScalaVersion = "2.12.18"
+val PlayVersion = "2.8.20"
 val ScalaFmtVersion = "2.4.6"
 
 name := "sbt-envisia-play"
@@ -61,3 +61,6 @@ releaseProcess := Seq[ReleaseStep](
   pushChanges
 )
 
+ThisBuild / libraryDependencySchemes ++= Seq(
+  "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
+)

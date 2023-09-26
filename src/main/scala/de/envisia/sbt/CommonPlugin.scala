@@ -134,8 +134,8 @@ object CommonPlugin extends AutoPlugin {
     },
     formatLint := formatLintTask.dependsOn(formatAll).value,
     // disables fatal warnings in the sbt console
-    scalacOptions in console in Compile -= "-Xfatal-warnings",
-    scalacOptions in console in Test -= "-Xfatal-warnings",
+    Compile / console / scalacOptions -= "-Xfatal-warnings",
+    Test / console / scalacOptions -= "-Xfatal-warnings",
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
     // disable gigahorse
     updateOptions := updateOptions.value.withGigahorse(false),
@@ -147,11 +147,11 @@ object CommonPlugin extends AutoPlugin {
       "Envisia Open" at "https://nexus.envisia.io/repository/public/"
     ),
     // disable doc creation
-    doc in Compile := (target.value / "none"),
-    sources in (Compile, doc) := Seq.empty,
-    publishArtifact in (Compile, packageDoc) := false,
+    Compile / doc := (target.value / "none"),
+    Compile / doc / sources := Seq.empty,
+    Compile / packageDoc / publishArtifact := false,
     // Tests
-    scalacOptions in Test ++= Seq("-Yrangepos"),
+    Test / scalacOptions ++= Seq("-Yrangepos"),
     scalaFatalWarnings := true,
     scalacOptions ++= {
       CrossVersion.partialVersion(scalaVersion.value) match {

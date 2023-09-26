@@ -143,10 +143,10 @@ object AngularPlugin extends AutoPlugin {
       // resolve dependencies before installing
       runProcessSync(log, s"${ngProcessPrefix.value}yarn install", ngDirectory.value)
     },
-    (run in Compile) := (run in Compile).dependsOn(packageInstall).evaluated,
+    Compile / run := (Compile / run).dependsOn(packageInstall).evaluated,
     // includes the angular application
     ngBuild := ngBuildTask.dependsOn(packageInstall).value,
-    mappings in (Compile, packageBin) ++= ngPackage.value,
+    Compile / packageBin / mappings ++= ngPackage.value,
     PlayKeys.playRunHooks += Angular2(
       ngCommand.value,
       ngBaseHref.value,
