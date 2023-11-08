@@ -30,7 +30,7 @@ object AngularPlugin extends AutoPlugin {
     val ngUseYarn: SettingKey[Boolean]          = settingKey[Boolean]("use yarn")
 
     private[sbt] object ngInternal {
-      val packageInstall: TaskKey[Unit]              = taskKey[Unit]("packageInstall")
+      val packageInstall: TaskKey[Unit] = taskKey[Unit]("packageInstall")
     }
   }
 
@@ -108,12 +108,12 @@ object AngularPlugin extends AutoPlugin {
   }
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    ngUseYarn := true,
+    ngUseYarn    := true,
     ngNodeMemory := 1024,
     ngDevModeAot := false,
-    ngDeployUrl := None,
-    ngBaseHref := None,
-    ngDirectory := file("ui"),
+    ngDeployUrl  := None,
+    ngBaseHref   := None,
+    ngDirectory  := file("ui"),
     ngProcessPrefix := {
       sys.props("os.name").toLowerCase match {
         case os if os.contains("win") => "cmd /c "
@@ -121,13 +121,13 @@ object AngularPlugin extends AutoPlugin {
       }
     },
     ngCommand := s"${ngProcessPrefix.value}node --max_old_space_size=${ngNodeMemory.value} node_modules/@angular/cli/bin/ng",
-    ngLint := ngLintTask.dependsOn(packageInstall).value,
+    ngLint   := ngLintTask.dependsOn(packageInstall).value,
     ngTarget := target.value / "web",
     cleanFiles += ngDirectory.value / "dist",
-    ngBaseDirectory := ngDirectory.value,
-    ngOutputDirectory := target.value / "dist",
+    ngBaseDirectory      := ngDirectory.value,
+    ngOutputDirectory    := target.value / "dist",
     ngDevOutputDirectory := ngTarget.value / "public" / "main",
-    ngPackage := ngBuildAndGzip.value,
+    ngPackage            := ngBuildAndGzip.value,
     packageInstall := Def.taskDyn {
       if (ngUseYarn.value) Def.task(yarnInstall.value)
       else Def.task(npmInstall.value)
@@ -154,7 +154,7 @@ object AngularPlugin extends AutoPlugin {
       ngBaseDirectory.value,
       target.value,
       ngDevOutputDirectory.value,
-      ngDevModeAot.value,
+      ngDevModeAot.value
     ),
     // Sets the Angular output directory as Play's public directory. This completely replaces the
     // public directory, if you want to use this in addition to the assets in the public directory,

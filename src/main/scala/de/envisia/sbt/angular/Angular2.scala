@@ -17,7 +17,7 @@ object Angular2 {
       ngAot: Boolean
   ): PlayRunHook = {
     val withBaseHref = ngBaseHref.map(h => s"--base-href=$h").getOrElse("")
-    val withAot = if (ngAot) s"--aot" else ""
+    val withAot      = if (ngAot) s"--aot" else ""
 
     object Angular2Process extends PlayRunHook {
       private var watchProcess: Option[Process] = None
@@ -28,7 +28,7 @@ object Angular2 {
           try {
             IO.read(cacheFile).trim.toLong
           } catch {
-            case _: NumberFormatException => 0l
+            case _: NumberFormatException => 0L
           }
         }
         val lastModified = (base / "package.json").lastModified()

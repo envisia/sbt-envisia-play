@@ -3,7 +3,7 @@ import xerial.sbt.Sonatype._
 
 /** Versions */
 val EnvisiaScalaVersion = "2.12.18"
-val PlayVersion = "2.9.0"
+val PlayVersion = "3.0.0"
 val ScalaFmtVersion = "2.4.6"
 
 name := "sbt-envisia-play"
@@ -32,7 +32,7 @@ developers := List(
 publishTo := sonatypePublishTo.value
 
 sbtPlugin := true
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % PlayVersion)
+addSbtPlugin("org.playframework" % "sbt-plugin" % PlayVersion)
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % ScalaFmtVersion)
 enablePlugins(BuildInfoPlugin)
 
