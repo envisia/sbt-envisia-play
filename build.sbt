@@ -2,8 +2,8 @@ import ReleaseTransformations._
 import xerial.sbt.Sonatype._
 
 /** Versions */
-val EnvisiaScalaVersion = "2.12.18"
-val PlayVersion = "3.0.0"
+val EnvisiaScalaVersion = "3.3.1"
+val PlayVersion = "3.0.1"
 val ScalaFmtVersion = "2.4.6"
 
 name := "sbt-envisia-play"
