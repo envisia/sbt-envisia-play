@@ -176,7 +176,7 @@ object CommonPlugin extends AutoPlugin {
     scalaFatalWarnings := true,
     scalacOptions ++= {
       CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((3, v)) if v == 3  => scalacOptions300(scalaFatalWarnings.value)
+        case Some((3, v))      => scalacOptions300(scalaFatalWarnings.value)
         case Some((2, v)) if v >= 13 => scalacOptions213(scalaFatalWarnings.value)
         case Some((2, v)) if v == 12 => scalacOptions212(scalaFatalWarnings.value)
         case _                       => throw new Exception("invalid scala version")
