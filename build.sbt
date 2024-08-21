@@ -1,5 +1,5 @@
-import ReleaseTransformations._
-import xerial.sbt.Sonatype._
+import ReleaseTransformations.*
+import xerial.sbt.Sonatype.*
 
 /** Versions */
 val EnvisiaScalaVersion = "2.12.18"
