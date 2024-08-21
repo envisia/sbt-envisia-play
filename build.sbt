@@ -44,6 +44,7 @@ buildInfoKeys := Seq[BuildInfoKey](
   "playVersion" -> PlayVersion,
 )
 
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
 releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
@@ -53,10 +54,9 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  releaseStepCommandAndRemaining("publishSigned"),
+  publishArtifacts,
   setNextVersion,
   commitNextVersion,
-  releaseStepCommand("sonatypeReleaseAll"),
   pushChanges
 )
 
