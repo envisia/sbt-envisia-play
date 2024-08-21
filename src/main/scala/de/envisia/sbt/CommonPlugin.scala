@@ -1,7 +1,7 @@
 package de.envisia.sbt
 
-import sbt._
-import sbt.Keys._
+import sbt.*
+import sbt.Keys.*
 import sbt.plugins.JvmPlugin
 
 object CommonPlugin extends AutoPlugin {
@@ -15,9 +15,9 @@ object CommonPlugin extends AutoPlugin {
     val formatLint: TaskKey[Unit]               = taskKey[Unit]("format and lint")
   }
 
-  import autoImport._
-  import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
-  import scala.sys.process._
+  import autoImport.*
+  import org.scalafmt.sbt.ScalafmtPlugin.autoImport.*
+  import scala.sys.process.*
 
   private def formatLintTask: Def.Initialize[Task[Unit]] = Def.task {
     val exitCode = "git diff --exit-code".!
@@ -148,7 +148,7 @@ object CommonPlugin extends AutoPlugin {
     )
   }
 
-  override def projectSettings = Seq(
+  override def projectSettings: Seq[Def.Setting[? >: Task[Unit] & Boolean & UpdateOptions & Task[Seq[File]] & Seq[Resolver] & Task[File] & Task[Seq[String]]]] = Seq(
     formatAll := {
       (Compile / scalafmt).value
       (Test / scalafmt).value

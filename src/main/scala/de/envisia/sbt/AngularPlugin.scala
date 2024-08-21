@@ -3,9 +3,9 @@ package de.envisia.sbt
 import de.envisia.sbt.angular.{ Angular2, Angular2Exception }
 import play.sbt.PlayImport.PlayKeys
 import play.sbt.{ PlayInternalKeys, PlayService }
-import sbt.Keys._
+import sbt.Keys.*
 import sbt.plugins.JvmPlugin
-import sbt.{ Def, _ }
+import sbt.*
 
 object AngularPlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin && PlayService
@@ -34,10 +34,10 @@ object AngularPlugin extends AutoPlugin {
     }
   }
 
-  import autoImport._
-  import autoImport.ngInternal._
-  import scala.sys.process._
-  import com.typesafe.sbt.packager.MappingsHelper._
+  import autoImport.*
+  import autoImport.ngInternal.*
+  import scala.sys.process.*
+  import com.typesafe.sbt.packager.MappingsHelper.*
 
   class AngularLogger(logger: sbt.Logger) extends ProcessLogger {
     override def out(s: => String): Unit = logger.info(s)
@@ -107,7 +107,7 @@ object AngularPlugin extends AutoPlugin {
     }
   }
 
-  override def projectSettings: Seq[Def.Setting[_]] = Seq(
+  override def projectSettings: Seq[Def.Setting[?]] = Seq(
     ngUseYarn    := true,
     ngNodeMemory := 1024,
     ngDevModeAot := false,

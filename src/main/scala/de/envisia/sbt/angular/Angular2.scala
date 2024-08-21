@@ -1,7 +1,7 @@
 package de.envisia.sbt.angular
 
 import play.sbt.PlayRunHook
-import sbt._
+import sbt.*
 
 import scala.sys.process.Process
 
@@ -24,12 +24,14 @@ object Angular2 {
 
       override def beforeStarted(): Unit = {
         val cacheFile = target / "package-json-last-modified"
-        val cacheLastModified = if (cacheFile.exists()) {
+        val cacheLastModified: Long = if (cacheFile.exists()) {
           try {
             IO.read(cacheFile).trim.toLong
           } catch {
             case _: NumberFormatException => 0L
           }
+        } else {
+          0L
         }
         val lastModified = (base / "package.json").lastModified()
         // Check if package.json has changed since we last ran this
