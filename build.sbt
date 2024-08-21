@@ -1,5 +1,4 @@
 import ReleaseTransformations.*
-import xerial.sbt.Sonatype.*
 
 /** Versions */
 val EnvisiaScalaVersion = "2.12.18"
@@ -10,10 +9,9 @@ name := "sbt-envisia-play"
 organization := "de.envisia.sbt"
 scalaVersion := EnvisiaScalaVersion
 // publishing settings
-sonatypeProfileName := "de.envisia"
 publishMavenStyle := true
+pomIncludeRepository := (_ => false)
 licenses := Seq("APL2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
-sonatypeProjectHosting := Some(GitHubHosting("schmitch", "sbt-envisia-play", "c.schmitt@briefdomain.de"))
 homepage := Some(url("https://www.envisia.de"))
 scmInfo := Some(
   ScmInfo(
@@ -29,9 +27,8 @@ developers := List(
     url = url("https://github.com/envisia")
   )
 )
-ThisBuild / sonatypeCredentialHost := sonatype01
-ThisBuild / versionScheme := Some("semver-spec")
-publishTo := sonatypePublishToBundle.value
+
+publishTo := Some("envisia" at "https://nexus.envisia.io/repository/public/")
 
 sbtPlugin := true
 addSbtPlugin("org.playframework" % "sbt-plugin" % PlayVersion)
