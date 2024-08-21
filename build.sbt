@@ -1,5 +1,6 @@
 import ReleaseTransformations.*
 import xerial.sbt.Sonatype.*
+import xerial.sbt.Sonatype.sonatypeCentralHost
 
 /** Versions */
 val EnvisiaScalaVersion = "2.12.18"
@@ -30,6 +31,7 @@ developers := List(
   )
 )
 publishTo := sonatypePublishTo.value
+ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 
 sbtPlugin := true
 addSbtPlugin("org.playframework" % "sbt-plugin" % PlayVersion)
