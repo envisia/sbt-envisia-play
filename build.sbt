@@ -30,8 +30,9 @@ developers := List(
     url = url("https://github.com/envisia")
   )
 )
-publishTo := sonatypePublishTo.value
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
+ThisBuild / versionScheme := Some("semver-spec")
+publishTo := sonatypePublishToBundle.value
 
 sbtPlugin := true
 addSbtPlugin("org.playframework" % "sbt-plugin" % PlayVersion)
