@@ -1,6 +1,5 @@
 import ReleaseTransformations.*
 import xerial.sbt.Sonatype.*
-import xerial.sbt.Sonatype.sonatypeCentralHost
 
 /** Versions */
 val EnvisiaScalaVersion = "2.12.18"
@@ -30,7 +29,7 @@ developers := List(
     url = url("https://github.com/envisia")
   )
 )
-ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
+ThisBuild / sonatypeCredentialHost := sonatype01
 ThisBuild / versionScheme := Some("semver-spec")
 publishTo := sonatypePublishToBundle.value
 
