@@ -2,7 +2,7 @@ import ReleaseTransformations.*
 
 /** Versions */
 val EnvisiaScalaVersion = "2.12.18"
-val PlayVersion = "3.0.5"
+val PlayVersion = "3.0.6"
 val ScalaFmtVersion = "2.4.6"
 
 name := "sbt-envisia-play"
