@@ -152,7 +152,13 @@ object AngularPlugin extends AutoPlugin {
     Compile / run := (Compile / run).dependsOn(packageInstall).evaluated,
     // includes the angular application
     ngBuild := ngBuildTask.dependsOn(packageInstall).value,
-    Compile / packageBin / mappings ++= ngPackage.value,
+    Compile / packageBin / mappings := {
+      if (ngDisableDevelopmentMode.value) {
+        (Compile / packageBin / mappings).value
+      } else {
+        (Compile / packageBin / mappings).value ++ ngPackage.value
+      }
+    },
     PlayKeys.playRunHooks := {
       if (ngDisableDevelopmentMode.value) {
         PlayKeys.playRunHooks.value
