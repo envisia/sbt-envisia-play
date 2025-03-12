@@ -110,12 +110,12 @@ object AngularPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[?]] = Seq(
     ngDisableDevelopmentMode := false,
-    ngUseYarn    := true,
-    ngNodeMemory := 1024,
-    ngDevModeAot := false,
-    ngDeployUrl  := None,
-    ngBaseHref   := None,
-    ngDirectory  := file("ui"),
+    ngUseYarn                := true,
+    ngNodeMemory             := 1024,
+    ngDevModeAot             := false,
+    ngDeployUrl              := None,
+    ngBaseHref               := None,
+    ngDirectory              := file("ui"),
     ngProcessPrefix := {
       sys.props("os.name").toLowerCase match {
         case os if os.contains("win") => "cmd /c "
@@ -131,8 +131,12 @@ object AngularPlugin extends AutoPlugin {
     ngDevOutputDirectory := ngTarget.value / "public" / "main",
     ngPackage            := ngBuildAndGzip.value,
     packageInstall := Def.taskDyn {
-      if (ngUseYarn.value) Def.task(yarnInstall.value)
-      else Def.task(npmInstall.value)
+      if (ngDisableDevelopmentMode.value) {
+        Def.task(())
+      } else {
+        if (ngUseYarn.value) Def.task(yarnInstall.value)
+        else Def.task(npmInstall.value)
+      }
     }.value,
     npmInstall := {
       val log = streams.value.log
