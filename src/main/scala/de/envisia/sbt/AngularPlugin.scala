@@ -11,23 +11,24 @@ object AngularPlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin && PlayService
 
   object autoImport {
-    val ngNodeMemory: SettingKey[Int]           = settingKey[Int]("ng node memory")
-    val ngProcessPrefix: SettingKey[String]     = settingKey[String]("ng process prefix (useful for windows)")
-    val ngBaseHref: SettingKey[Option[String]]  = settingKey[Option[String]]("ng base href")
-    val ngCommand: SettingKey[String]           = settingKey[String]("ng command")
-    val ngDirectory: SettingKey[File]           = settingKey[File]("ng directory")
-    val ngTarget: SettingKey[File]              = settingKey[File]("ng target")
-    val ngBaseDirectory: SettingKey[File]       = settingKey[File]("ngBaseDirectory")
-    val npmInstall: TaskKey[Unit]               = taskKey[Unit]("npmInstall")
-    val yarnInstall: TaskKey[Unit]              = taskKey[Unit]("yarnInstall")
-    val ngBuild: TaskKey[Seq[(File, String)]]   = taskKey[Seq[(File, String)]]("ngBuild")
-    val ngOutputDirectory: SettingKey[File]     = settingKey[File]("build output directory of angular")
-    val ngDevOutputDirectory: SettingKey[File]  = settingKey[File]("dev build output directory of angular")
-    val ngLint: TaskKey[Unit]                   = taskKey[Unit]("ng lint")
-    val ngPackage: TaskKey[Seq[(File, String)]] = taskKey[Seq[(File, String)]]("ng package")
-    val ngDeployUrl: SettingKey[Option[String]] = settingKey[Option[String]]("ng deploy url")
-    val ngDevModeAot: SettingKey[Boolean]       = settingKey[Boolean]("ng dev mode aot")
-    val ngUseYarn: SettingKey[Boolean]          = settingKey[Boolean]("use yarn")
+    val ngNodeMemory: SettingKey[Int]                 = settingKey[Int]("ng node memory")
+    val ngProcessPrefix: SettingKey[String]           = settingKey[String]("ng process prefix (useful for windows)")
+    val ngBaseHref: SettingKey[Option[String]]        = settingKey[Option[String]]("ng base href")
+    val ngCommand: SettingKey[String]                 = settingKey[String]("ng command")
+    val ngDirectory: SettingKey[File]                 = settingKey[File]("ng directory")
+    val ngTarget: SettingKey[File]                    = settingKey[File]("ng target")
+    val ngBaseDirectory: SettingKey[File]             = settingKey[File]("ngBaseDirectory")
+    val npmInstall: TaskKey[Unit]                     = taskKey[Unit]("npmInstall")
+    val yarnInstall: TaskKey[Unit]                    = taskKey[Unit]("yarnInstall")
+    val ngBuild: TaskKey[Seq[(File, String)]]         = taskKey[Seq[(File, String)]]("ngBuild")
+    val ngOutputDirectory: SettingKey[File]           = settingKey[File]("build output directory of angular")
+    val ngDevOutputDirectory: SettingKey[File]        = settingKey[File]("dev build output directory of angular")
+    val ngLint: TaskKey[Unit]                         = taskKey[Unit]("ng lint")
+    val ngPackage: TaskKey[Seq[(File, String)]]       = taskKey[Seq[(File, String)]]("ng package")
+    val ngDeployUrl: SettingKey[Option[String]]       = settingKey[Option[String]]("ng deploy url")
+    val ngDevModeAot: SettingKey[Boolean]             = settingKey[Boolean]("ng dev mode aot")
+    val ngUseYarn: SettingKey[Boolean]                = settingKey[Boolean]("use yarn")
+    val ngDisableDevelopmentMode: SettingKey[Boolean] = settingKey[Boolean]("ng dev mode disabled")
 
     private[sbt] object ngInternal {
       val packageInstall: TaskKey[Unit] = taskKey[Unit]("packageInstall")
@@ -108,6 +109,7 @@ object AngularPlugin extends AutoPlugin {
   }
 
   override def projectSettings: Seq[Def.Setting[?]] = Seq(
+    ngDisableDevelopmentMode := false,
     ngUseYarn    := true,
     ngNodeMemory := 1024,
     ngDevModeAot := false,
@@ -147,15 +149,21 @@ object AngularPlugin extends AutoPlugin {
     // includes the angular application
     ngBuild := ngBuildTask.dependsOn(packageInstall).value,
     Compile / packageBin / mappings ++= ngPackage.value,
-    PlayKeys.playRunHooks += Angular2(
-      ngCommand.value,
-      ngBaseHref.value,
-      streams.value.log,
-      ngBaseDirectory.value,
-      target.value,
-      ngDevOutputDirectory.value,
-      ngDevModeAot.value
-    ),
+    PlayKeys.playRunHooks := {
+      if (ngDisableDevelopmentMode.value) {
+        PlayKeys.playRunHooks.value
+      } else {
+        PlayKeys.playRunHooks.value ++ (Angular2(
+          ngCommand.value,
+          ngBaseHref.value,
+          streams.value.log,
+          ngBaseDirectory.value,
+          target.value,
+          ngDevOutputDirectory.value,
+          ngDevModeAot.value
+        ) :: Nil)
+      }
+    },
     // Sets the Angular output directory as Play's public directory. This completely replaces the
     // public directory, if you want to use this in addition to the assets in the public directory,
     // then use this instead:
