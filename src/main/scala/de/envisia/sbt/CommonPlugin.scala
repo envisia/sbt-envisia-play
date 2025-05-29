@@ -35,19 +35,7 @@ object CommonPlugin extends AutoPlugin {
     withFatalWarnings ::: List(
       "-encoding",
       "UTF-8", // yes, this is 2 args
-      "-deprecation",
-      "-feature",
-      "-unchecked",
-      "-Ycheck-init",
-      "-Wunused:imports",   // Warn if an import selector is not referenced.
-      "-Wunused:patvars",   // Warn if a variable bound in a pattern is unused.
-      "-Wunused:privates",  // Warn if a private member is unused.
-      "-Wunused:locals",    // Warn if a local definition is unused.
-      "-Wunused:explicits", // Warn if an explicit parameter is unused.
-      "-Wunused:implicits", // Warn if an implicit parameter is unused.
-      "-Wunused:params",    // Enable -Wunused:explicits,implicits.
-      "-Wunused:linted",    // -Xlint:unused.
-      "-Wvalue-discard"     // Warn when non-Unit expression results are unused.
+      "-deprecation"
     )
   }
 
