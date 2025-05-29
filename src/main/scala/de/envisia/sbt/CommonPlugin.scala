@@ -145,7 +145,7 @@ object CommonPlugin extends AutoPlugin {
     // disables fatal warnings in the sbt console
     Compile / console / scalacOptions -= "-Xfatal-warnings",
     Test / console / scalacOptions -= "-Xfatal-warnings",
-    javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
+    javacOptions ++= Seq("-source", "17", "-target", "17"),
     // disable gigahorse
     updateOptions := updateOptions.value.withGigahorse(false),
     updateOptions := updateOptions.value.withCachedResolution(true),
