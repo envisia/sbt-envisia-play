@@ -72,7 +72,7 @@ object AngularPlugin extends AutoPlugin {
       s"$ng build $withBaseHref --configuration production --progress=false --aot=true $withDeployUrl --output-path=${output.toString}",
       dir
     )
-    contentOf(output)
+    contentOf(output / "browser")
   }
 
   private def ngBuildAndGzip: Def.Initialize[Task[Seq[(File, String)]]] = Def.taskDyn {
